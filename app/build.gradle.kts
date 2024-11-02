@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -9,8 +7,6 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-val properties = Properties()
-file("../config.properties").inputStream().use { properties.load(it) }
 android {
     namespace = "com.hizari.fakestore"
     compileSdk = 35

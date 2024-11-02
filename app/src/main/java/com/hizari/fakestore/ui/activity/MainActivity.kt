@@ -1,4 +1,4 @@
-package com.hizari.fakestore
+package com.hizari.fakestore.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,6 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
+
+/**
+ * Fake Store - com.hizari.fakestore.ui.activity
+ *
+ * Created by hudiohizari on 02/11/24.
+ * https://github.com/hudiohizari
+ *
+ */
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
