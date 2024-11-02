@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_blue">#802C6E</color>
-    <color name="secondary_blue">#A6398F</color>
-    <color name="tertiary_color">#CCCCCC</color>
+    <color name="primary">#802C6E</color>
+    <color name="secondary">#A6398F</color>
+    <color name="tertiary">#CCCCCC</color>
 </resources>
