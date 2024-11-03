@@ -2,6 +2,7 @@ package com.hizari.fakestore.ui.screen.main.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -18,11 +19,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.main.MainNavAction
 import com.hizari.fakestore.ui.component.bar.FSTopAppBar
 import com.hizari.fakestore.ui.component.group.ChipGroup
+import com.hizari.fakestore.ui.component.group.VerticalStaggeredProductGroup
+import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import kotlinx.serialization.Serializable
 
@@ -97,13 +101,27 @@ fun HomeScreenContent(
         )
         ChipGroup(
             modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(
+                bottom = 0.dp,
+                end = 16.dp,
+                start = 16.dp,
+                top = 16.dp,
+            ),
             selected = viewState.selectedCategory,
-            items = viewState.categories,
+            items = viewState.categoryList,
             onSelectedChanged = { item ->
                 updateViewState {
                     it.copy(selectedCategory = item)
                 }
             }
+        )
+        VerticalStaggeredProductGroup(
+            modifier = Modifier.fillMaxWidth(),
+            onAddToCart = { },
+            onClick = {
+                mainNavAction.invoke(MainNavAction.GoToScreen(ProductDetailScreen(productId = it.id)))
+            },
+            productList = viewState.productList,
         )
     }
 }

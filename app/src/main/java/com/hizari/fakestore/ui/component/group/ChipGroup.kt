@@ -38,7 +38,7 @@ fun PreviewChipGroup() {
 @Composable
 fun ChipGroup(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(all = 4.dp),
+    contentPadding: PaddingValues = PaddingValues(all = 16.dp),
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
     items: List<String>,
     selected: String?,

@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class ProductDetailScreen(val productId: String)
+data class ProductDetailScreen(val productId: Long)
 
 @Composable
 fun ProductDetailScreen(
