@@ -3,14 +3,26 @@ package com.hizari.fakestore.ui.screen.main.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.main.MainNavAction
-import com.hizari.fakestore.ui.component.button.FSButton
-import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
+import com.hizari.fakestore.ui.component.bar.FSTopAppBar
+import com.hizari.fakestore.ui.component.group.ChipGroup
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import kotlinx.serialization.Serializable
 
@@ -29,10 +41,15 @@ data object HomeScreen
 fun HomeScreen(
     modifier: Modifier = Modifier,
     mainNavAction: (action: MainNavAction) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val viewState by viewModel.viewState.collectAsState()
+
     HomeScreenContent(
         modifier = modifier.fillMaxSize(),
-        mainNavAction = mainNavAction
+        mainNavAction = mainNavAction,
+        updateViewState = viewModel::updateViewState,
+        viewState = viewState
     )
 }
 
@@ -44,7 +61,9 @@ fun PreviewHomeScreenContent() {
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize(),
-            mainNavAction = {}
+            mainNavAction = {},
+            updateViewState = {},
+            viewState = HomeViewState()
         )
     }
 }
@@ -53,16 +72,38 @@ fun PreviewHomeScreenContent() {
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     mainNavAction: (action: MainNavAction) -> Unit,
+    updateViewState: ((HomeViewState) -> HomeViewState) -> Unit,
+    viewState: HomeViewState
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(text = "Home Screen")
-        FSButton(
-            onClick = {
-                mainNavAction.invoke(MainNavAction.GoToScreen(ProductDetailScreen("id")))
+    Column(modifier = modifier) {
+        FSTopAppBar(
+            actions = {
+                IconButton(onClick = { }) {
+                    BadgedBox(badge = {
+                        if (viewState.cartCounts <= 0) return@BadgedBox
+                        Badge {
+                            Text(text = viewState.cartCounts.toString())
+                        }
+                    }) {
+                        Icon(
+                            contentDescription = stringResource(R.string.cart),
+                            imageVector = Icons.Default.ShoppingCart,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                }
             },
-            text = "Go to detail"
+            title = stringResource(R.string.app_name)
+        )
+        ChipGroup(
+            modifier = Modifier.fillMaxWidth(),
+            selected = viewState.selectedCategory,
+            items = viewState.categories,
+            onSelectedChanged = { item ->
+                updateViewState {
+                    it.copy(selectedCategory = item)
+                }
+            }
         )
     }
 }

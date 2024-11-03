@@ -1,4 +1,5 @@
 <resources>
+    <string name="cart">Cart</string>
     <string name="hide_password">Hide password</string>
     <string name="go_up">Go Up</string>
     <string name="login">Login</string>
