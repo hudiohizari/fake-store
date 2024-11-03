@@ -3,8 +3,7 @@ package com.hizari.fakestore.ui.screen.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hizari.common.data.Result
-import com.hizari.common.extention.handleResult
-import com.hizari.domain.usecase.auth.PostLoginUseCase
+import com.hizari.domain.usecase.auth.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val postLoginUseCase: PostLoginUseCase
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val mutableViewState = MutableStateFlow(LoginViewState())
@@ -40,7 +39,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun doLogin() {
-        postLoginUseCase.invoke(
+        loginUseCase.invoke(
             username = viewState.value.username,
             password = viewState.value.password,
         ).onEach { res ->

@@ -2,7 +2,9 @@ package com.hizari.domain.usecase.auth
 
 import com.hizari.common.data.Result
 import com.hizari.common.extention.handleResult
+import com.hizari.domain.R
 import com.hizari.domain.model.auth.Token
+import com.hizari.domain.provider.ResourcesProvider
 import com.hizari.domain.repository.auth.AuthRepository
 import com.hizari.domain.repository.user.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +18,9 @@ import kotlinx.coroutines.flow.flow
  *
  */
 
-class PostLoginUseCase(
+class LoginUseCase(
     private val authRepository: AuthRepository,
+    private val resourcesProvider: ResourcesProvider,
     private val userRepository: UserRepository,
 ) {
     operator fun invoke(
@@ -50,8 +53,8 @@ class PostLoginUseCase(
         return handleResult(
             resultCall = { userResult },
             onSuccess = { user ->
-                val saveUserResult = userRepository.saveLoggedInUser(user)
-                val saveTokenResult = authRepository.saveAccessToken(token.token)
+                val saveUserResult = userRepository.setLoggedInUser(user)
+                val saveTokenResult = authRepository.setAccessToken(token.token)
 
                 if (saveUserResult.success() && saveTokenResult.error()) {
                     Result.Success(Unit)
@@ -69,7 +72,7 @@ class PostLoginUseCase(
         return when {
             saveUserResult is Result.Error -> Result.Error(message = saveUserResult.asMessage())
             saveTokenResult is Result.Error -> Result.Error(message = saveTokenResult.asMessage())
-            else -> Result.Error(message = "Unknown error occurred during login.")
+            else -> Result.Error(message = resourcesProvider.getString(R.string.failed_logout))
         }
     }
 }

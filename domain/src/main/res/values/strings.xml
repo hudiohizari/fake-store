@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="failed_login">Unknown error occurred during login.</string>
+    <string name="failed_logout">Unknown error occurred during logout.</string>
+</resources>

@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface UserRepository {
     suspend fun getCurrentUser(): Result<User>
-    suspend fun retrieveLoggedInUser(): Result<User>
-    suspend fun saveLoggedInUser(user: User): Result<Unit>
+    suspend fun setLoggedInUser(user: User): Result<Unit>
+    suspend fun getLoggedInUser(): Result<User>
+    suspend fun clearLoggedInUser(): Result<Unit>
 
     /**
      * Observe function

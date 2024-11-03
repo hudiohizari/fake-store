@@ -1,5 +1,6 @@
 package com.hizari.fakestore.ui.screen.main.profile
 
+import com.hizari.common.data.Result
 import com.hizari.domain.model.user.User
 
 /**
@@ -11,5 +12,6 @@ import com.hizari.domain.model.user.User
  */
 
 data class ProfileViewState(
-    val user: User = User.mock()
+    val logoutResult: Result<Unit> = Result.Empty,
+    val userResult: Result<User> = Result.Empty,
 )

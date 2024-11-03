@@ -13,5 +13,7 @@ import com.hizari.domain.model.auth.Token
 
 interface AuthRepository {
     suspend fun postLogin(username: String, password: String): Result<Token>
-    suspend fun saveAccessToken(token: String): Result<Unit>
+    suspend fun setAccessToken(token: String): Result<Unit>
+    suspend fun getAccessToken(): Result<Token>
+    suspend fun clearAccessToken(): Result<Unit>
 }

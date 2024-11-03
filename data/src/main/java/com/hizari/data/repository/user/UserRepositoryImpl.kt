@@ -29,7 +29,18 @@ class UserRepositoryImpl @Inject constructor(
         return Result.Success(User.mock())
     }
 
-    override suspend fun retrieveLoggedInUser(): Result<User> {
+    override suspend fun setLoggedInUser(user: User): Result<Unit> {
+        return handleResult(
+            resultCall = {
+                userDataStore.setUserData(user.toDTO())
+            },
+            onSuccess = {
+                Result.Success(Unit)
+            }
+        )
+    }
+
+    override suspend fun getLoggedInUser(): Result<User> {
         return handleResult(
             resultCall = {
                 userDataStore.getUserData()
@@ -40,10 +51,10 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun saveLoggedInUser(user: User): Result<Unit> {
+    override suspend fun clearLoggedInUser(): Result<Unit> {
         return handleResult(
             resultCall = {
-                userDataStore.setUserData(user.toDTO())
+                userDataStore.clearUserData()
             },
             onSuccess = {
                 Result.Success(Unit)

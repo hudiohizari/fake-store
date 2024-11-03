@@ -42,4 +42,12 @@ sealed class Result<out T> {
         }
     }
 
+    fun <T : Any> Result<T>.dataOr(defaultValue: T): T {
+        return if (this is Success) {
+            data
+        } else {
+            defaultValue
+        }
+    }
+
 }

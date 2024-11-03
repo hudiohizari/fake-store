@@ -2,6 +2,7 @@ package com.hizari.domain.di
 
 import com.hizari.domain.repository.user.UserRepository
 import com.hizari.domain.usecase.user.ObserveLoggedInUserUseCase
+import com.hizari.domain.usecase.user.RetrieveLoggedInUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,15 @@ object UserModule {
         userRepository: UserRepository,
     ): ObserveLoggedInUserUseCase {
         return ObserveLoggedInUserUseCase(
+            userRepository = userRepository,
+        )
+    }
+
+    @Provides
+    fun provideRetrieveLoggedInUserUseCase(
+        userRepository: UserRepository,
+    ): RetrieveLoggedInUserUseCase {
+        return RetrieveLoggedInUserUseCase(
             userRepository = userRepository,
         )
     }

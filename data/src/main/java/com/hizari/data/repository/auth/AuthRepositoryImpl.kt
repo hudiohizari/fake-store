@@ -42,10 +42,32 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun saveAccessToken(token: String): Result<Unit> {
+    override suspend fun setAccessToken(token: String): Result<Unit> {
         return handleResult(
             resultCall = {
                 tokenDataStore.setAccessToken(TokenDTO((token)))
+            },
+            onSuccess = {
+                Result.Success(Unit)
+            }
+        )
+    }
+
+    override suspend fun getAccessToken(): Result<Token> {
+        return handleResult(
+            resultCall = {
+                tokenDataStore.getAccessToken()
+            },
+            onSuccess = {
+                Result.Success(it.toDomain())
+            }
+        )
+    }
+
+    override suspend fun clearAccessToken(): Result<Unit> {
+        return handleResult(
+            resultCall = {
+                tokenDataStore.clearAccessToken()
             },
             onSuccess = {
                 Result.Success(Unit)
