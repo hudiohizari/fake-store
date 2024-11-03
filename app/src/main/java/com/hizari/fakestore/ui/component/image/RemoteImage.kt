@@ -38,6 +38,7 @@ fun PreviewRemoteImage() {
 @Composable
 fun RemoteImage(
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
     contentDescription: String,
     imageUrl: String,
 ) {
@@ -64,7 +65,7 @@ fun RemoteImage(
             }
             else -> {
                 SubcomposeAsyncImageContent(
-                    contentScale = ContentScale.Fit
+                    contentScale = contentScale
                 )
             }
         }

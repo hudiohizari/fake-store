@@ -26,6 +26,7 @@ import com.hizari.fakestore.navigation.main.MainNavAction
 import com.hizari.fakestore.ui.component.bar.FSTopAppBar
 import com.hizari.fakestore.ui.component.group.ChipGroup
 import com.hizari.fakestore.ui.component.group.VerticalStaggeredProductGroup
+import com.hizari.fakestore.ui.screen.main.cart.CartScreen
 import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import kotlinx.serialization.Serializable
@@ -82,7 +83,11 @@ fun HomeScreenContent(
     Column(modifier = modifier) {
         FSTopAppBar(
             actions = {
-                IconButton(onClick = { }) {
+                IconButton(
+                    onClick = {
+                        mainNavAction.invoke(MainNavAction.GoToScreen(CartScreen))
+                    }
+                ) {
                     BadgedBox(badge = {
                         if (viewState.cartCounts <= 0) return@BadgedBox
                         Badge {

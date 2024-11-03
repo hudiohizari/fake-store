@@ -1,10 +1,16 @@
 <resources>
+    <string name="add">Add</string>
+    <string name="add_to_cart">Add to Cart</string>
     <string name="cart">Cart</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
     <string name="hide_password">Hide password</string>
     <string name="go_up">Go Up</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="press_once_more_to_exit">Press once more to exit</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="remove">Remove</string>
     <string name="show_password">Show password</string>
     <string name="username">Username</string>
 </resources>

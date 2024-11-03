@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.hizari.domain.model.product.Product
 import com.hizari.fakestore.ui.component.image.RemoteImage
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
+import com.hizari.fakestore.ui.theme.Typography
 
 /**
  * Fake Store - com.hizari.fakestore.ui.component.item
@@ -85,7 +86,7 @@ fun ProductGridItem(
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 text = product.title,
-                style = MaterialTheme.typography.bodyLarge
+                style = Typography.bodyLarge
             )
 
             Row(
@@ -99,7 +100,7 @@ fun ProductGridItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = product.price,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = Typography.bodyMedium,
                 )
 
                 IconButton(onClick = onAddToCart) {

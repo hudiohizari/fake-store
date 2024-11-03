@@ -1,16 +1,40 @@
 package com.hizari.fakestore.ui.screen.main.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.main.MainNavAction
+import com.hizari.fakestore.ui.component.bar.FSTopAppBar
 import com.hizari.fakestore.ui.component.button.FSButton
+import com.hizari.fakestore.ui.component.image.RemoteImage
+import com.hizari.fakestore.ui.component.picker.QuantityPicker
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
+import com.hizari.fakestore.ui.theme.Typography
 import kotlinx.serialization.Serializable
 
 /**
@@ -28,10 +52,15 @@ data class ProductDetailScreen(val productId: Long)
 fun ProductDetailScreen(
     modifier: Modifier = Modifier,
     mainNavAction: (action: MainNavAction) -> Unit,
+    viewModel: ProductDetailViewModel = hiltViewModel(),
 ) {
+    val viewState by viewModel.viewState.collectAsState()
+
     ProductDetailScreenContent(
         modifier = modifier.fillMaxSize(),
-        mainNavAction = mainNavAction
+        mainNavAction = mainNavAction,
+        updateViewState = viewModel::updateViewState,
+        viewState = viewState
     )
 }
 
@@ -43,7 +72,9 @@ fun PreviewProductDetailScreenContent() {
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize(),
-            mainNavAction = {}
+            mainNavAction = {},
+            updateViewState = {},
+            viewState = ProductDetailViewState()
         )
     }
 }
@@ -52,17 +83,126 @@ fun PreviewProductDetailScreenContent() {
 fun ProductDetailScreenContent(
     modifier: Modifier = Modifier,
     mainNavAction: (action: MainNavAction) -> Unit,
+    updateViewState: ((ProductDetailViewState) -> ProductDetailViewState) -> Unit,
+    viewState: ProductDetailViewState
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(text = "Product Detail Screen")
-        FSButton(
-            onClick = {
-                mainNavAction.invoke(MainNavAction.GoBack())
-            },
-            text = "Go to back to home"
+    ConstraintLayout(modifier = modifier.fillMaxSize()) {
+
+        val (ftab, cContent, cButtons) = createRefs()
+
+        FSTopAppBar(
+            modifier = Modifier
+                .constrainAs(ftab) {
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    width = Dimension.fillToConstraints
+                },
+            onBackPressed = { mainNavAction.invoke(MainNavAction.GoBack()) },
+            title = stringResource(R.string.product_detail)
         )
+
+        Column(
+            modifier = Modifier
+                .constrainAs(cContent) {
+                    top.linkTo(ftab.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(cButtons.top)
+                    height = Dimension.fillToConstraints
+                    width = Dimension.fillToConstraints
+                }
+                .verticalScroll(rememberScrollState()),
+        ) {
+            RemoteImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(2f),
+                contentDescription = viewState.product.title,
+                imageUrl = viewState.product.image,
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = viewState.product.price,
+                style = Typography.titleLarge
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = viewState.product.title,
+                style = Typography.titleLarge
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.tertiary,
+                text = viewState.product.category,
+                style = Typography.labelMedium
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                text = viewState.product.description,
+                style = Typography.bodyMedium
+            )
+        }
+
+        Surface(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .constrainAs(cButtons) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .padding(16.dp),
+            shape = RectangleShape,
+            color = MaterialTheme.colorScheme.surface,
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                QuantityPicker(
+                    onDecrement = {
+                        updateViewState {
+                            it.copy(quantity = it.quantity - 1)
+                        }
+                    },
+                    onIncrement = {
+                        updateViewState {
+                            it.copy(quantity = it.quantity + 1)
+                        }
+                    },
+                    quantity = viewState.quantity,
+                )
+                FSButton(
+                    onClick = {
+                        updateViewState {
+                            it.copy(quantity = 1)
+                        }
+                    },
+                    text = stringResource(R.string.add_to_cart),
+                )
+            }
+        }
     }
 }
 

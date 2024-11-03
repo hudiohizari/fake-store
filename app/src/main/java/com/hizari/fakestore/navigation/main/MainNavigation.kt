@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hizari.fakestore.ui.component.navhost.SlideNavHost
+import com.hizari.fakestore.ui.screen.main.cart.CartScreen
 import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
 import com.hizari.fakestore.ui.screen.main.home.HomeScreen
 import kotlinx.serialization.Serializable
@@ -56,6 +57,9 @@ fun MainNavigation(modifier: Modifier = Modifier) {
     ) {
         composable<HomeScreen> {
             HomeScreen(mainNavAction = ::mainNavAction)
+        }
+        composable<CartScreen> {
+            CartScreen(mainNavAction = ::mainNavAction)
         }
         composable<ProductDetailScreen> {
             ProductDetailScreen(mainNavAction = ::mainNavAction)
