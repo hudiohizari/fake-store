@@ -54,8 +54,8 @@ fun LoginScreen(
     LoginScreenContent(
         modifier = modifier,
         doAction = viewModel::doAction,
+        updateViewState = viewModel::updateViewState,
         viewState = viewState,
-        updateViewState = viewModel::updateViewState
     )
 }
 

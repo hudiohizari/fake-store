@@ -8,16 +8,29 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFontFamilyResolver
+import androidx.compose.ui.text.font.createFontFamilyResolver
+import androidx.navigation.compose.rememberNavController
+import com.hizari.common.extention.orFalse
 import com.hizari.common.extention.toast
+import com.hizari.common.util.FSLog
 import com.hizari.fakestore.R
-import com.hizari.fakestore.ui.screen.auth.login.LoginScreen
+import com.hizari.fakestore.navigation.root.RootNavigation
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 /**
  * Fake Store - com.hizari.fakestore.ui.activity
@@ -32,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
     private var backPressedOnce = false
     private val backPressHandler = Handler(Looper.getMainLooper())
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +58,28 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BackPressHandler()
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                FSLog.e("There has been an issue: ", throwable)
+            }
 
-            FakeStoreTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            val rootNavController = rememberNavController()
+
+            val userLoggedIn by viewModel.userLoggedIn.collectAsState()
+
+            CompositionLocalProvider(
+                value = LocalFontFamilyResolver provides createFontFamilyResolver(
+                    context = LocalContext.current,
+                    coroutineContext = handler
+                )
+            ) {
+                FakeStoreTheme {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        RootNavigation(
+                            modifier = Modifier.padding(paddingValues = innerPadding),
+                            rootNavController = rootNavController,
+                            userLoggedIn = userLoggedIn
+                        )
+                    }
                 }
             }
         }
