@@ -12,10 +12,8 @@ import com.hizari.domain.model.address.GeoLocation
  */
 
 data class User(
-    val id: Int,
+    val id: Long,
     val email: String,
-    val username: String,
-    val password: String,
     val name: Name,
     val address: Address,
     val phone: String
@@ -26,8 +24,6 @@ data class User(
             return  User(
                 id = 1,
                 email = "John@gmail.com",
-                username = "johnd",
-                password = "m38rmF$",
                 name = Name(firstname = "John", lastname = "Doe"),
                 address = Address(
                     city = "kilcoole",
