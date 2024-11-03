@@ -1,5 +1,7 @@
 package com.hizari.data.model.dto.user
 
+import kotlinx.serialization.Serializable
+
 /**
  * Fake Store - com.hizari.domain.model.user
  *
@@ -8,6 +10,7 @@ package com.hizari.data.model.dto.user
  *
  */
 
+@Serializable
 data class NameDTO(
     val firstname: String,
     val lastname: String

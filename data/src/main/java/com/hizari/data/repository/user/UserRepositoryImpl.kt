@@ -1,6 +1,7 @@
 package com.hizari.data.repository.user
 
 import com.hizari.common.data.Result
+import com.hizari.common.extention.handleResult
 import com.hizari.data.local.datastore.user.UserDataStore
 import com.hizari.data.mapper.user.toDTO
 import com.hizari.data.mapper.user.toDomain

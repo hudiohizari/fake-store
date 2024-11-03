@@ -1,6 +1,7 @@
 package com.hizari.data.model.dto.address
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /**
  * Fake Store - com.hizari.domain.model.address
@@ -10,6 +11,7 @@ import com.google.gson.annotations.SerializedName
  *
  */
 
+@Serializable
 data class AddressDTO(
     val city: String? = null,
     @SerializedName("geolocation")

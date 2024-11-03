@@ -1,6 +1,7 @@
 package com.hizari.data.repository.auth
 
 import com.hizari.common.data.Result
+import com.hizari.common.extention.handleResult
 import com.hizari.data.local.datastore.token.TokenDataStore
 import com.hizari.data.mapper.auth.toDomain
 import com.hizari.data.model.dto.auth.TokenDTO

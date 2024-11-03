@@ -82,7 +82,7 @@ private fun LoginScreenContent(
     viewState: LoginViewState,
 ) {
 
-    val (username, password, passwordError) = viewState
+    val (loginResult, password, passwordError, username) = viewState
 
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
         val (cScroll, bLogin) = createRefs()
@@ -129,6 +129,7 @@ private fun LoginScreenContent(
                             width = Dimension.fillToConstraints
                         },
                     colors = defaultOutlinedTextFieldColors(),
+                    enabled = loginResult.loading().not(),
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     ),
@@ -155,15 +156,12 @@ private fun LoginScreenContent(
                             top.linkTo(tUsername.bottom, 16.dp)
                             width = Dimension.fillToConstraints
                         },
+                    enabled = loginResult.loading().not(),
                     error = passwordError.isNotNullAndEmpty(),
                     errorText = passwordError,
                     keyboardActions = KeyboardActions(
                         onSend = {
-                            doAction(
-                                LoginViewAction.DoLogin {
-
-                                }
-                            )
+                            doAction(LoginViewAction.DoLogin)
                         }
                     ),
                     keyboardOptions = KeyboardOptions(
@@ -183,7 +181,7 @@ private fun LoginScreenContent(
             }
         }
 
-        val buttonEnabled = username.isNotNullAndEmpty() && password.isNotNullAndEmpty()
+        val buttonEnabled = loginResult.loading().not() && username.isNotNullAndEmpty() && password.isNotNullAndEmpty()
 
         FixedButton(
             modifier = Modifier
@@ -194,12 +192,9 @@ private fun LoginScreenContent(
                     width = Dimension.fillToConstraints
                 },
             enabled = buttonEnabled,
+            loading = loginResult.loading(),
             onClick = {
-                doAction(
-                    LoginViewAction.DoLogin {
-
-                    }
-                )
+                doAction(LoginViewAction.DoLogin)
             },
             text = stringResource(R.string.login)
         )

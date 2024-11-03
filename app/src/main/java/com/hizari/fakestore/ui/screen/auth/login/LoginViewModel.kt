@@ -2,14 +2,16 @@ package com.hizari.fakestore.ui.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hizari.common.data.Result
+import com.hizari.common.extention.handleResult
+import com.hizari.domain.usecase.auth.PostLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
 /**
  * Fake Store - com.hizari.fakestore.ui.screen.auth.login
@@ -20,7 +22,9 @@ import kotlin.random.Random
  */
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val postLoginUseCase: PostLoginUseCase
+) : ViewModel() {
 
     private val mutableViewState = MutableStateFlow(LoginViewState())
     val viewState = mutableViewState.asStateFlow()
@@ -31,15 +35,31 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     fun doAction(action: LoginViewAction) {
         when (action) {
-            is LoginViewAction.DoLogin -> doLogin(action.doOnSuccess)
+            is LoginViewAction.DoLogin -> doLogin()
         }
     }
 
-    private fun doLogin(doOnSuccess: () -> Unit) {
-        viewModelScope.launch {
-            delay(Random.nextLong(50, 5000))
-            doOnSuccess.invoke()
-        }
+    private fun doLogin() {
+        postLoginUseCase.invoke(
+            username = viewState.value.username,
+            password = viewState.value.password,
+        ).onEach { res ->
+            when (res) {
+                is Result.Error -> {
+                    updateViewState {
+                        it.copy(
+                            loginResult = res,
+                            passwordError = res.asMessage()
+                        )
+                    }
+                }
+                else -> {
+                    updateViewState {
+                        it.copy(loginResult = res)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
 }

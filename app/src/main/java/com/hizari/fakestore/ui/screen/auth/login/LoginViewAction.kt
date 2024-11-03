@@ -9,5 +9,5 @@ package com.hizari.fakestore.ui.screen.auth.login
  */
 
 sealed interface LoginViewAction {
-    data class DoLogin(val doOnSuccess: () -> Unit) : LoginViewAction
+    data object DoLogin : LoginViewAction
 }

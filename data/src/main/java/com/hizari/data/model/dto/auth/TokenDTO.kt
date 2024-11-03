@@ -1,5 +1,7 @@
 package com.hizari.data.model.dto.auth
 
+import kotlinx.serialization.Serializable
+
 /**
  * Fake Store - com.hizari.data.model.dto.auth
  *
@@ -7,6 +9,8 @@ package com.hizari.data.model.dto.auth
  * https://github.com/hudiohizari
  *
  */
+
+@Serializable
 data class TokenDTO(
     val token: String?
 )

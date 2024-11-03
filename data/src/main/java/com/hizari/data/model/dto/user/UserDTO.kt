@@ -1,6 +1,7 @@
 package com.hizari.data.model.dto.user
 
 import com.hizari.data.model.dto.address.AddressDTO
+import kotlinx.serialization.Serializable
 
 /**
  * Fake Store - com.hizari.domain.model.user
@@ -10,6 +11,7 @@ import com.hizari.data.model.dto.address.AddressDTO
  *
  */
 
+@Serializable
 data class UserDTO(
     val address: AddressDTO? = null,
     val email: String? = null,

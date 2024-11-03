@@ -1,5 +1,7 @@
 package com.hizari.data.model.dto.address
 
+import kotlinx.serialization.Serializable
+
 /**
  * Fake Store - com.hizari.domain.model.address
  *
@@ -8,6 +10,7 @@ package com.hizari.data.model.dto.address
  *
  */
 
+@Serializable
 data class GeoLocationDTO(
     val lat: String? = null,
     val long: String? = null
