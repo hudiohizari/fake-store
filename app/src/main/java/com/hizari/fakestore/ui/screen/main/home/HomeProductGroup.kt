@@ -1,9 +1,10 @@
-package com.hizari.fakestore.ui.component.group
+package com.hizari.fakestore.ui.screen.main.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hizari.domain.model.product.Product
 import com.hizari.fakestore.ui.component.item.ProductGridItem
+import com.hizari.fakestore.ui.component.state.DefaultEmpty
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import com.hizari.fakestore.util.extention.bottomFadingEdge
 import com.hizari.fakestore.util.extention.topFadingEdge
@@ -28,10 +30,10 @@ import kotlin.random.Random
 
 @Preview
 @Composable
-fun PreviewVerticalStaggeredProductGroup() {
+fun PreviewHomeProductGroup() {
     var index = 0
     FakeStoreTheme {
-        VerticalStaggeredProductGroup(
+        HomeProductGroup(
             onAddToCart = {},
             onClick = {},
             productList = List(10) {
@@ -49,7 +51,7 @@ fun PreviewVerticalStaggeredProductGroup() {
 }
 
 @Composable
-fun VerticalStaggeredProductGroup(
+fun HomeProductGroup(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(all = 16.dp),
     onAddToCart: (Product) -> Unit,
@@ -77,6 +79,10 @@ fun VerticalStaggeredProductGroup(
                 onClick = { onClick.invoke(product) },
                 product = product
             )
+        }
+
+        if (productList.isEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) { DefaultEmpty() }
         }
     }
 }

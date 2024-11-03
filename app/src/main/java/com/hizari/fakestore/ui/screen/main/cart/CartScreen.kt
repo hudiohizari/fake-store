@@ -3,13 +3,10 @@ package com.hizari.fakestore.ui.screen.main.cart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -88,33 +85,28 @@ fun CartScreenContent(
             title = stringResource(R.string.cart)
         )
 
-        LazyColumn(
+        CartGroup(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(viewState.cartList) { cart ->
-                CartItem(
-                    cart = cart,
-                    onDelete = {
-                        updateViewState { viewState ->
-                            viewState.copy(cartList = viewState.cartList.filter { it.id != cart.id })
+            cartList = viewState.cartList,
+            onDelete = { cart ->
+                updateViewState { viewState ->
+                    viewState.copy(cartList = viewState.cartList.filter {
+                        it.id != cart.id
+                    })
+                }
+            },
+            onQuantityChange = { cart, newQuantity ->
+                updateViewState { viewState ->
+                    viewState.copy(cartList = viewState.cartList.map {
+                        if (it.id == cart.id) {
+                            it.copy(quantity = newQuantity)
+                        } else {
+                            it
                         }
-                    },
-                    onQuantityChange = { newQuantity ->
-                        updateViewState { viewState ->
-                            viewState.copy(cartList = viewState.cartList.map {
-                                if (it.id == cart.id) {
-                                    it.copy(quantity = newQuantity)
-                                } else {
-                                    it
-                                }
-                            })
-                        }
-                    }
-                )
+                    })
+                }
             }
-        }
+        )
 
         Row(
             modifier = Modifier
@@ -131,6 +123,7 @@ fun CartScreenContent(
             )
             FSButton(
                 modifier = Modifier.padding(vertical = 8.dp),
+                enabled = viewState.cartList.isNotEmpty(),
                 onClick = { context.toast(R.string.checkout) },
                 text = stringResource(R.string.checkout)
             )
