@@ -11,4 +11,10 @@ package com.hizari.domain.model.address
 data class GeoLocation(
     val lat: String,
     val long: String
-)
+) {
+    companion object {
+        fun empty(): GeoLocation {
+            return GeoLocation(lat = "", long = "")
+        }
+    }
+}

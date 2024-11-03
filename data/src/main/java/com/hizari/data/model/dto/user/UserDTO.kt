@@ -12,19 +12,16 @@ import com.hizari.data.model.dto.address.GeoLocationDTO
  */
 
 data class UserDTO(
-    val id: Long? = null,
-    val email: String? = null,
-    val name: NameDTO? = null,
     val address: AddressDTO? = null,
+    val email: String? = null,
+    val id: Long? = null,
+    val name: NameDTO? = null,
     val phone: String? = null
 ) {
 
     companion object {
         fun mock(): UserDTO {
             return  UserDTO(
-                id = 1,
-                email = "John@gmail.com",
-                name = NameDTO(firstname = "John", lastname = "Doe"),
                 address = AddressDTO(
                     city = "kilcoole",
                     street = "7835 new road",
@@ -32,6 +29,9 @@ data class UserDTO(
                     zipcode = "12926-3874",
                     geoLocation = GeoLocationDTO(lat = "-37.3159", long = "81.1496")
                 ),
+                email = "John@gmail.com",
+                id = 1,
+                name = NameDTO(firstname = "John", lastname = "Doe"),
                 phone = "1-570-236-7033"
             )
         }

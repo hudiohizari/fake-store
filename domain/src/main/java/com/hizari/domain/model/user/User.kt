@@ -12,10 +12,10 @@ import com.hizari.domain.model.address.GeoLocation
  */
 
 data class User(
-    val id: Long,
-    val email: String,
-    val name: Name,
     val address: Address,
+    val email: String,
+    val id: Long,
+    val name: Name,
     val phone: String
 ) {
 

@@ -11,4 +11,10 @@ package com.hizari.domain.model.user
 data class Name(
     val firstname: String,
     val lastname: String
-)
+) {
+    companion object {
+        fun empty(): Name {
+            return Name(firstname = "", lastname = "")
+        }
+    }
+}

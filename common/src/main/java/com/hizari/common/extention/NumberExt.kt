@@ -16,6 +16,10 @@ fun Long?.orZero(): Long {
     return this ?: 0
 }
 
+fun Int?.orZero(): Int {
+    return this ?: 0
+}
+
 fun Long?.toDotFormat(): String {
     val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         groupingSeparator = '.'

@@ -12,9 +12,9 @@ import com.google.gson.annotations.SerializedName
 
 data class AddressDTO(
     val city: String? = null,
-    val street: String? = null,
-    val number: Int? = null,
-    val zipcode: String? = null,
     @SerializedName("geolocation")
-    val geoLocation: GeoLocationDTO? = null
+    val geoLocation: GeoLocationDTO? = null,
+    val number: Int? = null,
+    val street: String? = null,
+    val zipcode: String? = null,
 )

@@ -10,8 +10,20 @@ package com.hizari.domain.model.address
 
 data class Address(
     val city: String,
-    val street: String,
+    val geoLocation: GeoLocation,
     val number: Int,
+    val street: String,
     val zipcode: String,
-    val geoLocation: GeoLocation
-)
+) {
+    companion object {
+        fun empty(): Address {
+            return Address(
+                city = "",
+                geoLocation = GeoLocation.empty(),
+                number = 0,
+                street = "",
+                zipcode = ""
+            )
+        }
+    }
+}
