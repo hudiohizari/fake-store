@@ -1,7 +1,6 @@
 package com.hizari.fakestore.ui.screen.main.detail
 
 import com.hizari.domain.model.product.Product
-import kotlin.random.Random
 
 /**
  * Fake Store - com.hizari.fakestore.ui.screen.main.home

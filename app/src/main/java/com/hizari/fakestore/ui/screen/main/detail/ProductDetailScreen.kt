@@ -117,8 +117,10 @@ fun ProductDetailScreenContent(
         ) {
             RemoteImage(
                 modifier = Modifier
+                    .aspectRatio(2f)
+                    .background(MaterialTheme.colorScheme.surface)
                     .fillMaxWidth()
-                    .aspectRatio(2f),
+                    .padding(8.dp),
                 contentDescription = viewState.product.title,
                 imageUrl = viewState.product.image,
             )

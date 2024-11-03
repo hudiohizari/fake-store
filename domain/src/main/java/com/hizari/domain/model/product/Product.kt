@@ -23,9 +23,8 @@ data class Product(
         private fun randomTitle(): String {
             return when (Random.nextInt(3)) {
                 0 -> "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
-                1 -> "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops, So I Don't Have To Carry Everything"
-                2 -> "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops, Can Carry A Suitcase Too"
-                else -> "Fjallraven - Foldsack"
+                1 -> "Fjallraven - Foldsack"
+                else -> "Fjallraven"
             }
         }
 
