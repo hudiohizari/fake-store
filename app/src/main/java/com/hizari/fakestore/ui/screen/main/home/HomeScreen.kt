@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -27,6 +28,7 @@ import com.hizari.fakestore.ui.component.bar.FSTopAppBar
 import com.hizari.fakestore.ui.component.group.ChipGroup
 import com.hizari.fakestore.ui.screen.main.cart.CartScreen
 import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
+import com.hizari.fakestore.ui.screen.main.profile.ProfileBottomSheetScreen
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import kotlinx.serialization.Serializable
 
@@ -100,6 +102,21 @@ fun HomeScreenContent(
                         )
                     }
                 }
+                IconButton(
+                    onClick = {
+                        updateViewState {
+                            it.copy(
+                                showProfile = true
+                            )
+                        }
+                    }
+                ) {
+                    Icon(
+                        contentDescription = stringResource(R.string.product_detail),
+                        imageVector = Icons.Default.Person,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             },
             title = stringResource(R.string.app_name)
         )
@@ -128,6 +145,17 @@ fun HomeScreenContent(
                 mainNavAction.invoke(MainNavAction.GoToScreen(ProductDetailScreen(productId = it.id)))
             },
             productList = viewState.productList,
+        )
+
+        ProfileBottomSheetScreen(
+            onDismissRequest = {
+                updateViewState {
+                    it.copy(
+                        showProfile = false
+                    )
+                }
+            },
+            showBottomSheet = viewState.showProfile
         )
     }
 }

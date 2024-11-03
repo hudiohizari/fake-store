@@ -21,6 +21,7 @@ data class HomeViewState(
         "Women's Clothing"
     ),
     val selectedCategory: String = categoryList.first(),
+    val showProfile: Boolean = false,
     val productList: List<Product> = List(10) {
         Product.mock(id = it.toLong())
     }
