@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="access_token_is_empty">Access token is empty</string>
+    <string name="failed_to_clear_access_token">Failed to clear access token</string>
+    <string name="failed_to_clear_user_data">Failed to clear user data</string>
+    <string name="local_user_data_is_empty">Local user data is empty</string>
     <string name="server_down">Sorry, the server cannot be reached, please try again later.</string>
 </resources>
