@@ -12,5 +12,6 @@
     <string name="product_detail">Product Detail</string>
     <string name="remove">Remove</string>
     <string name="show_password">Show password</string>
+    <string name="success_add_n_items_to_cart">Success add %1$d items to cart</string>
     <string name="username">Username</string>
 </resources>

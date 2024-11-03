@@ -22,6 +22,12 @@ val OnBackgroundDark = Color.White
 val OnSurfaceLight = Color.Black
 val OnSurfaceDark = Color.White
 val TertiaryColor = Color(0xFFCCCCCC)
+val SuccessLight = Color(0xFF4CAF50)
+val SuccessDark = Color(0xFF388E3C)
+val SuccessContainer = Color(0xFFE7F5EB)
+val WarningLight = Color(0xFFFFC107)
+val WarningDark = Color(0xFFFFA000)
+val WarningContainer = Color(0xFFFFF8E3)
 
 @Composable
 fun defaultOutlinedTextFieldColors(): TextFieldColors {

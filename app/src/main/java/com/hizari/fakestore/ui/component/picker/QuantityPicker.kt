@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,6 +79,10 @@ fun QuantityPicker(
 
     var quantityText by remember { mutableStateOf(quantity.toString()) }
 
+    LaunchedEffect(quantity) {
+        quantityText = quantity.toString()
+    }
+
     Surface(
         border = BorderStroke(
             color = MaterialTheme.colorScheme.primary,
@@ -108,9 +113,10 @@ fun QuantityPicker(
             BasicTextField(
                 value = quantityText,
                 onValueChange = { newText ->
-                    val newQuantity = newText.toIntOrNull() ?: quantity
+                    val filteredText = newText.filter { it.isDigit() }
+                    val newQuantity = filteredText.toIntOrNull() ?: quantity
                     if (newQuantity in minQuantity..maxQuantity) {
-                        quantityText = newText
+                        quantityText = filteredText
                         onQuantityChange(newQuantity)
                     }
                 },

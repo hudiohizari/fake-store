@@ -12,6 +12,7 @@ import kotlin.random.Random
  */
 
 data class ProductDetailViewState(
+    val addedQuantity: Int = 1,
     val product: Product = Product(
         id = 1,
         title = "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
@@ -20,5 +21,6 @@ data class ProductDetailViewState(
         category = "men's clothing",
         image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     ),
-    val quantity: Int = 1
+    val quantity: Int = 1,
+    val showAddToCart: Boolean = false,
 )

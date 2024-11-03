@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.main.MainNavAction
 import com.hizari.fakestore.ui.component.bar.FSTopAppBar
+import com.hizari.fakestore.ui.component.bar.SnackBar
 import com.hizari.fakestore.ui.component.button.FSButton
 import com.hizari.fakestore.ui.component.image.RemoteImage
 import com.hizari.fakestore.ui.component.picker.QuantityPicker
@@ -88,7 +89,7 @@ fun ProductDetailScreenContent(
 ) {
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
-        val (ftab, cContent, cButtons) = createRefs()
+        val (ftab, cContent, sbAddToCart, cButtons) = createRefs()
 
         FSTopAppBar(
             modifier = Modifier
@@ -162,6 +163,27 @@ fun ProductDetailScreenContent(
             )
         }
 
+        SnackBar(
+            modifier = Modifier
+                .constrainAs(sbAddToCart) {
+                    bottom.linkTo(cButtons.top, 16.dp)
+                    end.linkTo(parent.end, 16.dp)
+                    start.linkTo(parent.start, 16.dp)
+                    width = Dimension.fillToConstraints
+                },
+            onClosed = {
+                updateViewState {
+                    it.copy(
+                        showAddToCart = false
+                    )
+                }
+            },
+            show = viewState.showAddToCart,
+            snackBar = SnackBar.success(
+                text = stringResource(R.string.success_add_n_items_to_cart, viewState.addedQuantity),
+            ),
+        )
+
         Surface(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface)
@@ -191,7 +213,11 @@ fun ProductDetailScreenContent(
                 FSButton(
                     onClick = {
                         updateViewState {
-                            it.copy(quantity = 1)
+                            it.copy(
+                                addedQuantity = viewState.quantity,
+                                quantity = 1,
+                                showAddToCart = true,
+                            )
                         }
                     },
                     text = stringResource(R.string.add_to_cart),
