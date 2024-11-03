@@ -104,6 +104,7 @@ fun HomeScreenContent(
             },
             title = stringResource(R.string.app_name)
         )
+
         ChipGroup(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(
@@ -120,6 +121,7 @@ fun HomeScreenContent(
                 }
             }
         )
+        
         VerticalStaggeredProductGroup(
             modifier = Modifier.fillMaxWidth(),
             onAddToCart = { },

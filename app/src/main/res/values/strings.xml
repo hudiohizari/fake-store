@@ -3,6 +3,8 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="cart">Cart</string>
     <string name="category">Category</string>
+    <string name="checkout">Checkout</string>
+    <string name="delete">Delete</string>
     <string name="description">Description</string>
     <string name="hide_password">Hide password</string>
     <string name="go_up">Go Up</string>

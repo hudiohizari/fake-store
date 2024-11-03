@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,6 +55,11 @@ private fun PreviewQuantityPicker() {
                 quantity = 1,
             )
             QuantityPicker(
+                enableDelete = true,
+                onQuantityChange = {},
+                quantity = 1,
+            )
+            QuantityPicker(
                 onQuantityChange = {},
                 quantity = 2,
             )
@@ -71,12 +77,13 @@ private fun PreviewQuantityPicker() {
 
 @Composable
 fun QuantityPicker(
+    enableDelete: Boolean = false,
+    maxQuantity: Int = 99,
+    minQuantity: Int = 1,
     onQuantityChange: (Int) -> Unit,
+    onDelete: () -> Unit = {},
     quantity: Int,
 ) {
-    val minQuantity = 1
-    val maxQuantity = 999
-
     var quantityText by remember { mutableStateOf(quantity.toString()) }
 
     LaunchedEffect(quantity) {
@@ -94,20 +101,34 @@ fun QuantityPicker(
             modifier = Modifier.padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (quantity > minQuantity) {
-                IconButton(onClick = {
-                    val newQuantity = quantity - 1
-                    quantityText = newQuantity.toString()
-                    onQuantityChange.invoke(newQuantity)
-                }) {
-                    Icon(
-                        contentDescription = stringResource(R.string.remove),
-                        imageVector = Icons.Default.Remove,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+            when {
+                quantity > minQuantity -> {
+                    IconButton(onClick = {
+                        val newQuantity = quantity - 1
+                        quantityText = newQuantity.toString()
+                        onQuantityChange.invoke(newQuantity)
+                    }) {
+                        Icon(
+                            contentDescription = stringResource(R.string.remove),
+                            imageVector = Icons.Default.Remove,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
-            } else {
-                Box(modifier = Modifier.size(48.dp))
+
+                enableDelete -> {
+                    IconButton(onClick = onDelete) {
+                        Icon(
+                            contentDescription = stringResource(R.string.delete),
+                            imageVector = Icons.Default.Delete,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                else -> {
+                    Box(modifier = Modifier.size(48.dp))
+                }
             }
 
             BasicTextField(
@@ -120,7 +141,7 @@ fun QuantityPicker(
                         onQuantityChange(newQuantity)
                     }
                 },
-                modifier = Modifier.width(48.dp),
+                modifier = Modifier.width(32.dp),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center

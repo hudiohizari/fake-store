@@ -211,6 +211,7 @@ fun ProductDetailScreenContent(
                     quantity = viewState.quantity,
                 )
                 FSButton(
+                    enabled = viewState.showAddToCart.not(),
                     onClick = {
                         updateViewState {
                             it.copy(

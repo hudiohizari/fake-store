@@ -1,5 +1,8 @@
 package com.hizari.domain.model.product
 
+import com.hizari.common.extention.toDotFormat
+import kotlin.random.Random
+
 /**
  * Fake Store - com.hizari.domain.model.product
  *
@@ -15,4 +18,15 @@ data class Product(
     val image: String,
     val price: String,
     val title: String
-)
+) {
+    companion object {
+        fun mock(id: Long = 1) = Product(
+            id = id,
+            title = "$id Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+            price = "Rp${Random.nextLong(1000, 10000000).toDotFormat()}",
+            description = "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+            category = "men's clothing",
+            image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+        )
+    }
+}
