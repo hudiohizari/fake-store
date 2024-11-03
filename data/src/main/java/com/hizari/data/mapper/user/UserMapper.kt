@@ -1,6 +1,7 @@
 package com.hizari.data.mapper.user
 
 import com.hizari.common.extention.orZero
+import com.hizari.data.mapper.address.toDTO
 import com.hizari.data.mapper.address.toDomain
 import com.hizari.data.model.dto.user.UserDTO
 import com.hizari.domain.model.address.Address
@@ -22,5 +23,15 @@ fun UserDTO.toDomain(): User {
         email = email.orEmpty(),
         name = name?.toDomain() ?: Name.empty(),
         phone = phone.orEmpty(),
+    )
+}
+
+fun User.toDTO(): UserDTO {
+    return UserDTO(
+        address = address.toDTO(),
+        email = email,
+        id = id,
+        name = name.toDTO(),
+        phone = phone
     )
 }

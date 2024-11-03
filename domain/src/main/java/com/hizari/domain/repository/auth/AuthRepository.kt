@@ -1,6 +1,7 @@
 package com.hizari.domain.repository.auth
 
 import com.hizari.common.data.Result
+import com.hizari.domain.model.auth.Token
 
 /**
  * Fake Store - com.hizari.data.repository.auth
@@ -11,6 +12,6 @@ import com.hizari.common.data.Result
  */
 
 interface AuthRepository {
-    suspend fun postLogin(username: String, password: String): Result<Nothing>
-    suspend fun saveAccessToken(token: String): Result<Nothing>
+    suspend fun postLogin(username: String, password: String): Result<Token>
+    suspend fun saveAccessToken(token: String): Result<Unit>
 }

@@ -17,3 +17,10 @@ fun GeoLocationDTO.toDomain(): GeoLocation {
         long = long.orEmpty()
     )
 }
+
+fun GeoLocation.toDTO(): GeoLocationDTO {
+    return GeoLocationDTO(
+        lat = lat,
+        long = long
+    )
+}

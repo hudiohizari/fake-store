@@ -60,13 +60,13 @@ abstract class SafeApiRequest {
     }
 
     suspend fun <T : Any, R : Any> handleResult(
-        resourceCall: suspend () -> Result<T>,
+        resultCall: suspend () -> Result<T>,
         onError: suspend (Int?, String?, Throwable?) -> Result<R> = { code, message, throwable ->
             Result.Error(code, message, throwable)
         },
         onSuccess: suspend (T) -> Result<R>
     ): Result<R> {
-        return when (val result = resourceCall()) {
+        return when (val result = resultCall()) {
             is Result.Success -> onSuccess(result.data)
             is Result.Error -> onError(result.code, result.message, result.throwable)
             is Result.Loading -> result

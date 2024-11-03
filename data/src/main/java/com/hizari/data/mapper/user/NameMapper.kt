@@ -17,3 +17,10 @@ fun NameDTO.toDomain(): Name {
         lastname = lastname
     )
 }
+
+fun Name.toDTO(): NameDTO {
+    return NameDTO(
+        firstname = firstname,
+        lastname = lastname
+    )
+}

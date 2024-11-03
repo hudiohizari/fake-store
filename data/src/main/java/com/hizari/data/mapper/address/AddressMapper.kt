@@ -22,3 +22,13 @@ fun AddressDTO.toDomain(): Address {
         zipcode = zipcode.orEmpty(),
     )
 }
+
+fun Address.toDTO(): AddressDTO {
+    return AddressDTO(
+        city = city,
+        geoLocation = geoLocation.toDTO(),
+        number = number,
+        street = street,
+        zipcode = zipcode
+    )
+}
