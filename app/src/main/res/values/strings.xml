@@ -6,6 +6,7 @@
     <string name="checkout">Checkout</string>
     <string name="delete">Delete</string>
     <string name="description">Description</string>
+    <string name="empty_data">Empty data</string>
     <string name="hide_password">Hide password</string>
     <string name="go_up">Go Up</string>
     <string name="login">Login</string>
@@ -13,7 +14,9 @@
     <string name="press_once_more_to_exit">Press once more to exit</string>
     <string name="product_detail">Product Detail</string>
     <string name="remove">Remove</string>
+    <string name="retry">Retry</string>
     <string name="show_password">Show password</string>
+    <string name="sorry_something_went_wrong">Sorry, something went wrong</string>
     <string name="success_add_n_items_to_cart">Success add %1$d items to cart</string>
     <string name="username">Username</string>
 </resources>
