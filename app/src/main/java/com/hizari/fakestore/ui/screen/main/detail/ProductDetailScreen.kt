@@ -181,14 +181,9 @@ fun ProductDetailScreenContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 QuantityPicker(
-                    onDecrement = {
+                    onQuantityChange = { quantity ->
                         updateViewState {
-                            it.copy(quantity = it.quantity - 1)
-                        }
-                    },
-                    onIncrement = {
-                        updateViewState {
-                            it.copy(quantity = it.quantity + 1)
+                            it.copy(quantity = quantity)
                         }
                     },
                     quantity = viewState.quantity,
