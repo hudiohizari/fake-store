@@ -19,5 +19,5 @@ interface UserRepository {
     /**
      * Observe function
      * */
-    suspend fun observeLoggedInUser(): Flow<Result<User>>
+    fun observeLoggedInUser(): Flow<Result<User>>
 }

@@ -53,7 +53,7 @@ class UserRepositoryImpl @Inject constructor(
     /**
      * Observe function
      * */
-    override suspend fun observeLoggedInUser(): Flow<Result<User>> {
+    override fun observeLoggedInUser(): Flow<Result<User>> {
         return userDataStore.observeUserData().map { res ->
             handleResult(
                 resultCall = {

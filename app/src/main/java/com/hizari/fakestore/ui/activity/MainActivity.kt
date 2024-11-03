@@ -11,15 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -27,14 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFontFamilyResolver
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.navigation.compose.rememberNavController
 import com.hizari.common.extention.toast
 import com.hizari.common.util.FSLog
 import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.root.RootNavigation
-import com.hizari.fakestore.ui.component.bar.FSTopAppBar
 import com.hizari.fakestore.ui.theme.FakeStoreTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -71,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
             val rootNavController = rememberNavController()
 
-            val userLoggedIn by viewModel.userLoggedIn.collectAsState()
+            val userResult by viewModel.userResult.collectAsState()
 
             CompositionLocalProvider(
                 value = LocalFontFamilyResolver provides createFontFamilyResolver(
@@ -81,11 +71,13 @@ class MainActivity : ComponentActivity() {
             ) {
                 FakeStoreTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        RootNavigation(
-                            modifier = Modifier.padding(paddingValues = innerPadding),
-                            rootNavController = rootNavController,
-                            userLoggedIn = userLoggedIn
-                        )
+                        if (userResult.loading().not()) {
+                            RootNavigation(
+                                modifier = Modifier.padding(paddingValues = innerPadding),
+                                rootNavController = rootNavController,
+                                userLoggedIn = userResult.success()
+                            )
+                        }
                     }
                 }
             }

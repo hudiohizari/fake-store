@@ -1,11 +1,15 @@
 package com.hizari.fakestore.ui.activity
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hizari.common.data.Result
+import com.hizari.domain.model.user.User
+import com.hizari.domain.usecase.user.ObserveLoggedInUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import kotlin.random.Random
 
 /**
  * Fake Store - com.hizari.fakestore.ui.activity
@@ -16,10 +20,14 @@ import kotlin.random.Random
  */
 
 @HiltViewModel
-class MainViewModel @Inject constructor(): ViewModel() {
-    private val mutableCartCounts = MutableStateFlow(Random.nextInt(99))
-    val cartCounts: StateFlow<Int> = mutableCartCounts
+class MainViewModel @Inject constructor(
+    observeLoggedInUserUseCase: ObserveLoggedInUserUseCase
+): ViewModel() {
 
-    private val mutableUserLoggedIn = MutableStateFlow(true)
-    val userLoggedIn: StateFlow<Boolean> = mutableUserLoggedIn
+    val userResult: StateFlow<Result<User>> = observeLoggedInUserUseCase.invoke()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = Result.Loading
+        )
 }
