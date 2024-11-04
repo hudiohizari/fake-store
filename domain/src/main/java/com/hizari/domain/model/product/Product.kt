@@ -17,6 +17,7 @@ data class Product(
     val id: Long,
     val image: String,
     val price: String,
+    val rating: String,
     val title: String
 ) {
     companion object {
@@ -29,12 +30,13 @@ data class Product(
         }
 
         fun mock(id: Long = 1) = Product(
-            id = id,
-            title = "$id ${randomTitle()}",
-            price = "Rp${Random.nextLong(1000, 10000000).toDotFormat()}",
-            description = "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
             category = "men's clothing",
+            description = "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+            id = id,
             image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+            price = "Rp${Random.nextLong(1000, 10000000).toDotFormat()}",
+            rating = "4.7 / 5 (500)",
+            title = "$id ${randomTitle()}",
         )
     }
 }

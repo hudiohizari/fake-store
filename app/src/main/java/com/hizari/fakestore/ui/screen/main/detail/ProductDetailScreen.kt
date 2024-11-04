@@ -149,7 +149,16 @@ fun ProductDetailScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = viewState.product.rating,
+                style = Typography.labelMedium
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 text = viewState.product.category,
                 style = Typography.labelMedium
             )
