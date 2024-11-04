@@ -1,8 +1,12 @@
 package com.hizari.data.di
 
 import com.hizari.data.repository.auth.AuthRepositoryImpl
+import com.hizari.data.repository.cart.CartRepositoryImpl
+import com.hizari.data.repository.product.ProductRepositoryImpl
 import com.hizari.data.repository.user.UserRepositoryImpl
 import com.hizari.domain.repository.auth.AuthRepository
+import com.hizari.domain.repository.cart.CartRepository
+import com.hizari.domain.repository.product.ProductRepository
 import com.hizari.domain.repository.user.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -33,4 +37,16 @@ abstract class RepositoryBind {
     abstract fun bindUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindProductRepository(
+        productRepositoryImpl: ProductRepositoryImpl
+    ): ProductRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCartRepository(
+        cartRepositoryImpl: CartRepositoryImpl
+    ): CartRepository
 }

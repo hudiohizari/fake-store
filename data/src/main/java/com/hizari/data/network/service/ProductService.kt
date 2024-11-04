@@ -25,6 +25,11 @@ interface ProductService {
     @POST("products/")
     suspend fun getProductList(): Response<List<ProductDTO>>
 
+    @POST("products/{id}")
+    suspend fun getProductById(
+        @Path("id") id: Long
+    ): Response<ProductDTO>
+
     @POST("products/category/{category}")
     suspend fun getProductListByCategory(
         @Path("category") category: String

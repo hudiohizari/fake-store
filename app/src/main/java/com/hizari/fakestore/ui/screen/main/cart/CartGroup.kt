@@ -6,9 +6,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hizari.domain.model.cart.Cart
+import com.hizari.domain.model.cart.CartProduct
 import com.hizari.fakestore.ui.component.state.DefaultEmpty
+import com.hizari.fakestore.ui.theme.FakeStoreTheme
 
 /**
  * Fake Store - com.hizari.fakestore.ui.screen.main.cart
@@ -18,13 +21,25 @@ import com.hizari.fakestore.ui.component.state.DefaultEmpty
  *
  */
 
+@Preview
+@Composable
+fun PreviewCartGroup() {
+    FakeStoreTheme {
+        CartGroup(
+            cart = Cart.mock(),
+            onDelete = {},
+            onQuantityChange = { _, _ -> }
+        )
+    }
+}
+
 @Composable
 fun CartGroup(
     modifier: Modifier = Modifier,
-    cartList: List<Cart>,
+    cart: Cart,
     contentPadding: PaddingValues = PaddingValues(all = 16.dp),
-    onDelete: (Cart) -> Unit,
-    onQuantityChange: (Cart, Int) -> Unit,
+    onDelete: (CartProduct) -> Unit,
+    onQuantityChange: (CartProduct, Int) -> Unit,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
 ) {
     LazyColumn(
@@ -32,14 +47,14 @@ fun CartGroup(
         contentPadding = contentPadding,
         verticalArrangement = verticalArrangement,
     ) {
-        items(cartList) { cart ->
+        items(cart.products) { cartProduct ->
             CartItem(
-                cart = cart,
-                onDelete = { onDelete.invoke(cart) },
-                onQuantityChange = { onQuantityChange.invoke(cart, it) }
+                cartProduct = cartProduct,
+                onDelete = { onDelete.invoke(cartProduct) },
+                onQuantityChange = { onQuantityChange.invoke(cartProduct, it) }
             )
         }
-        if (cartList.isEmpty()) {
+        if (cart.products.isEmpty()) {
             item { DefaultEmpty() }
         }
     }

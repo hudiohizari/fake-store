@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hizari.domain.model.cart.Cart
+import com.hizari.domain.model.cart.CartProduct
 import com.hizari.domain.model.product.Product
 import com.hizari.fakestore.ui.component.image.RemoteImage
 import com.hizari.fakestore.ui.component.picker.QuantityPicker
@@ -38,11 +38,7 @@ import com.hizari.fakestore.ui.theme.FakeStoreTheme
 fun PreviewCartItem() {
     FakeStoreTheme {
         CartItem(
-            cart = Cart(
-                id = 1,
-                product = Product.mock(),
-                quantity = 1
-            ),
+            cartProduct = CartProduct.mock(),
             onDelete = {},
             onQuantityChange = {}
         )
@@ -51,7 +47,7 @@ fun PreviewCartItem() {
 
 @Composable
 fun CartItem(
-    cart: Cart,
+    cartProduct: CartProduct,
     onDelete: () -> Unit,
     onQuantityChange: (Int) -> Unit,
 ) {
@@ -72,8 +68,8 @@ fun CartItem(
                     color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(8.dp)
                 ),
-            contentDescription = cart.product.title,
-            imageUrl = cart.product.image,
+            contentDescription = cartProduct.product.title,
+            imageUrl = cartProduct.product.image,
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -82,7 +78,7 @@ fun CartItem(
             Text(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                text = cart.product.title,
+                text = cartProduct.product.title,
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -96,7 +92,7 @@ fun CartItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = cart.product.price,
+                    text = cartProduct.product.price,
                     fontSize = 14.sp,
                 )
 
@@ -104,7 +100,7 @@ fun CartItem(
                     enableDelete = true,
                     onDelete = onDelete,
                     onQuantityChange = { onQuantityChange(it) },
-                    quantity = cart.quantity,
+                    quantity = cartProduct.quantity,
                 )
             }
         }

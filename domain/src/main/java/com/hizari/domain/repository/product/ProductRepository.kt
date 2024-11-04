@@ -14,5 +14,6 @@ import com.hizari.domain.model.product.Product
 interface ProductRepository {
     suspend fun getProductCategoryList(): Result<List<String>>
     suspend fun getProductList(): Result<List<Product>>
+    suspend fun getProductById(id: Long): Result<Product>
     suspend fun getProductListByCategory(category: String): Result<List<Product>>
 }

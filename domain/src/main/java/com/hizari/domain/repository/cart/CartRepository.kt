@@ -1,7 +1,7 @@
 package com.hizari.domain.repository.cart
 
 import com.hizari.common.data.Result
-import com.hizari.domain.model.product.Product
+import com.hizari.domain.model.cart.Cart
 
 /**
  * Fake Store - com.hizari.data.repository.auth
@@ -12,5 +12,5 @@ import com.hizari.domain.model.product.Product
  */
 
 interface CartRepository {
-    suspend fun getCartByUserId(userId: Long): Result<List<Product>>
+    suspend fun getCartByUserId(userId: Long): Result<Cart>
 }

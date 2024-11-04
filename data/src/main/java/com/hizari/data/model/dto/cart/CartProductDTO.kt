@@ -10,5 +10,5 @@ package com.hizari.data.model.dto.cart
 
 data class CartProductDTO(
     val productId: Long? = null,
-    val quantity: Long? = null
+    val quantity: Int? = null
 )

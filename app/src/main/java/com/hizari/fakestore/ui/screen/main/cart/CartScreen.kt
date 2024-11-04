@@ -87,23 +87,27 @@ fun CartScreenContent(
 
         CartGroup(
             modifier = Modifier.weight(1f),
-            cartList = viewState.cartList,
+            cart = viewState.cart,
             onDelete = { cart ->
                 updateViewState { viewState ->
-                    viewState.copy(cartList = viewState.cartList.filter {
-                        it.id != cart.id
-                    })
+                    viewState.copy(cart = viewState.cart.copy(
+                        products = viewState.cart.products.filter {
+                            it.product.id != cart.product.id
+                        })
+                    )
                 }
             },
             onQuantityChange = { cart, newQuantity ->
                 updateViewState { viewState ->
-                    viewState.copy(cartList = viewState.cartList.map {
-                        if (it.id == cart.id) {
-                            it.copy(quantity = newQuantity)
-                        } else {
-                            it
+                    viewState.copy(cart = viewState.cart.copy(
+                        products = viewState.cart.products.map {
+                            if (it.product.id == cart.product.id) {
+                                it.copy(quantity = newQuantity)
+                            } else {
+                                it
+                            }
                         }
-                    })
+                    ))
                 }
             }
         )
@@ -123,7 +127,7 @@ fun CartScreenContent(
             )
             FSButton(
                 modifier = Modifier.padding(vertical = 8.dp),
-                enabled = viewState.cartList.isNotEmpty(),
+                enabled = viewState.cart.products.isNotEmpty(),
                 onClick = { context.toast(R.string.checkout) },
                 text = stringResource(R.string.checkout)
             )

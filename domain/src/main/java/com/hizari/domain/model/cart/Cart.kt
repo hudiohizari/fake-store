@@ -1,7 +1,5 @@
 package com.hizari.domain.model.cart
 
-import com.hizari.domain.model.product.Product
-
 /**
  * Fake Store - com.hizari.domain.model.cart
  *
@@ -12,6 +10,12 @@ import com.hizari.domain.model.product.Product
 
 data class Cart(
     val id: Long,
-    val product: Product,
-    val quantity: Int
-)
+    val products: List<CartProduct>,
+) {
+    companion object {
+        fun mock(id: Long = 0) = Cart(
+            id = id,
+            products = List(5) { CartProduct.mock(id = it.toLong()) },
+        )
+    }
+}
