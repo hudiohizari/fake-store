@@ -2,6 +2,8 @@ package com.hizari.data.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.hizari.data.local.datastore.token.TokenDataStore
+import com.hizari.data.network.interceptor.AccessTokenInterceptor
 import com.hizari.data.network.service.AuthService
 import com.hizari.data.network.service.UserService
 import com.hizari.data.network.util.Client
@@ -33,14 +35,23 @@ object NetworkModule {
         return ChuckerInterceptor.Builder(context = context).build()
     }
 
+    @Provides
+    @Singleton
+    fun provideAccessTokenInterceptor(
+        tokenDataStore: TokenDataStore
+    ): AccessTokenInterceptor {
+        return AccessTokenInterceptor(tokenDataStore = tokenDataStore)
+    }
 
     @Provides
     @Singleton
     fun provideClient(
         chuckerInterceptor: ChuckerInterceptor,
+        accessTokenInterceptor: AccessTokenInterceptor,
     ): Client {
         return Client(
             chuckerInterceptor = chuckerInterceptor,
+            accessTokenInterceptor = accessTokenInterceptor
         )
     }
 
