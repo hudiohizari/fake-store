@@ -1,7 +1,7 @@
 package com.hizari.fakestore.ui.screen.main.home
 
+import com.hizari.common.data.Result
 import com.hizari.domain.model.product.Product
-import kotlin.random.Random
 
 /**
  * Fake Store - com.hizari.fakestore.ui.screen.main.home
@@ -12,17 +12,11 @@ import kotlin.random.Random
  */
 
 data class HomeViewState(
-    val cartCounts: Int = Random.nextInt(10),
-    val categoryList: List<String> = listOf(
-        "All",
-        "Electronics",
-        "Jewelery",
-        "Men's Clothing",
-        "Women's Clothing"
-    ),
-    val selectedCategory: String = categoryList.first(),
+    val cartCountResult: Result<Int> = Result.Empty,
+    val categoryListResult: Result<List<String>> = Result.Empty,
+    val selectedCategory: String? = null,
     val showProfile: Boolean = false,
-    val productList: List<Product> = List(10) {
-        Product.mock(id = it.toLong())
-    }
+    val showAddedToCart: Boolean = false,
+    val productAddedToCart: Product? = null,
+    val productListResult: Result<List<Product>> = Result.Empty
 )

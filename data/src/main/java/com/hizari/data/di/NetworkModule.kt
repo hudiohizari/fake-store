@@ -5,6 +5,8 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.hizari.data.local.datastore.token.TokenDataStore
 import com.hizari.data.network.interceptor.AccessTokenInterceptor
 import com.hizari.data.network.service.AuthService
+import com.hizari.data.network.service.CartService
+import com.hizari.data.network.service.ProductService
 import com.hizari.data.network.service.UserService
 import com.hizari.data.network.util.Client
 import dagger.Module
@@ -65,5 +67,17 @@ object NetworkModule {
     @Singleton
     fun provideUserService(client: Client): UserService {
         return UserService.invoke(client = client)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductService(client: Client): ProductService {
+        return ProductService.invoke(client = client)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartService(client: Client): CartService {
+        return CartService.invoke(client = client)
     }
 }

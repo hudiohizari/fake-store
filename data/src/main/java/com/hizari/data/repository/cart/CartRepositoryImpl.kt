@@ -5,15 +5,12 @@ import com.hizari.common.extention.handleResult
 import com.hizari.common.extention.orZero
 import com.hizari.data.mapper.cart.toDomain
 import com.hizari.data.mapper.product.toDomain
-import com.hizari.data.mapper.user.toDTO
 import com.hizari.data.network.service.CartService
 import com.hizari.data.network.service.ProductService
 import com.hizari.data.network.util.SafeApiRequest
 import com.hizari.domain.model.cart.Cart
 import com.hizari.domain.model.cart.CartProduct
-import com.hizari.domain.model.product.Product
 import com.hizari.domain.repository.cart.CartRepository
-import com.hizari.domain.repository.product.ProductRepository
 import javax.inject.Inject
 
 /**
@@ -29,6 +26,19 @@ class CartRepositoryImpl @Inject constructor(
     private val productService: ProductService,
 ) : CartRepository, SafeApiRequest() {
 
+    override suspend fun getCartCountByUserId(userId: Long): Result<Int> {
+        return handleResult(
+            resultCall = {
+                apiRequest {
+                    cartService.getCartByUserId(userId = userId)
+                }
+            },
+            onSuccess = { response ->
+                Result.Success(response.last().products?.size.orZero())
+            }
+        )
+    }
+
     override suspend fun getCartByUserId(userId: Long): Result<Cart> {
         return handleResult(
             resultCall = {
@@ -37,8 +47,9 @@ class CartRepositoryImpl @Inject constructor(
                 }
             },
             onSuccess = { response ->
+                // Getting last cart
                 val products = mutableListOf<CartProduct>()
-                response.products?.forEach {
+                response.last().products?.forEach {
                     val productRes = apiRequest {
                         productService.getProductById(id = it.productId.orZero())
                     }
@@ -51,7 +62,7 @@ class CartRepositoryImpl @Inject constructor(
                         )
                     }
                 }
-                Result.Success(response.toDomain(products))
+                Result.Success(response.last().toDomain(products))
             }
         )
     }

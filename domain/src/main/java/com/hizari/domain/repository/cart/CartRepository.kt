@@ -12,5 +12,6 @@ import com.hizari.domain.model.cart.Cart
  */
 
 interface CartRepository {
+    suspend fun getCartCountByUserId(userId: Long): Result<Int>
     suspend fun getCartByUserId(userId: Long): Result<Cart>
 }

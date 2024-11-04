@@ -1,6 +1,6 @@
 package com.hizari.fakestore.ui.screen.main.cart
 
-import com.hizari.common.extention.toDotFormat
+import com.hizari.common.data.Result
 import com.hizari.domain.model.cart.Cart
 
 /**
@@ -11,15 +11,5 @@ import com.hizari.domain.model.cart.Cart
  *
  */
 data class CartViewState(
-    val cart: Cart = Cart.mock()
-) {
-
-    fun getTotalPrice(): String {
-        return "Rp${
-            cart.products.sumOf { cart ->
-                cart.product.price.filter { it.isDigit() }.toLong() * cart.quantity
-            }.toDotFormat()
-        }"
-    }
-
-}
+    val cartResult: Result<Cart> = Result.Empty
+)

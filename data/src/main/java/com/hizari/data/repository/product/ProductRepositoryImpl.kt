@@ -1,9 +1,9 @@
 package com.hizari.data.repository.product
 
 import com.hizari.common.data.Result
+import com.hizari.common.extention.capitalizeWord
 import com.hizari.common.extention.handleResult
 import com.hizari.data.mapper.product.toDomain
-import com.hizari.data.mapper.user.toDTO
 import com.hizari.data.network.service.ProductService
 import com.hizari.data.network.util.SafeApiRequest
 import com.hizari.domain.model.product.Product
@@ -30,7 +30,7 @@ class ProductRepositoryImpl @Inject constructor(
                 }
             },
             onSuccess = { response ->
-                Result.Success(response)
+                Result.Success(response.map { it.capitalizeWord() })
             }
         )
     }

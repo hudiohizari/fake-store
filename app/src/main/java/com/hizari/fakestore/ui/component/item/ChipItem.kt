@@ -64,8 +64,10 @@ fun ChipItem(
         shadowElevation = 8.dp,
         shape = MaterialTheme.shapes.medium,
     ) {
-        Row(modifier = Modifier
-            .clickable { onSelectionChanged(name) }
+        Row(
+            modifier = Modifier.clickable {
+                onSelectionChanged(name)
+            }
         ) {
             Text(
                 text = name,

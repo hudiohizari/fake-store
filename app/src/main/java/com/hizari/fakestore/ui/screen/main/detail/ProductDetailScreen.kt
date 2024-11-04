@@ -191,7 +191,7 @@ fun ProductDetailScreenContent(
             },
             show = viewState.showAddToCart,
             snackBar = SnackBar.success(
-                text = stringResource(R.string.success_add_n_items_to_cart, viewState.addedQuantity),
+                text = stringResource(R.string.successfully_added_n_items_to_cart, viewState.addedQuantity),
             ),
         )
 

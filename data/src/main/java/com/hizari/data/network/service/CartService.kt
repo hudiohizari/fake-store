@@ -6,7 +6,7 @@ import com.hizari.data.network.util.Client
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.POST
+import retrofit2.http.GET
 import retrofit2.http.Path
 
 /**
@@ -19,19 +19,19 @@ import retrofit2.http.Path
 
 interface CartService {
 
-    @POST("carts/user/{id}")
+    @GET("carts/user/{id}")
     suspend fun getCartByUserId(
         @Path("id") userId: Long
-    ): Response<CartDTO>
+    ): Response<List<CartDTO>>
 
     companion object {
-        operator fun invoke(client: Client): UserService {
+        operator fun invoke(client: Client): CartService {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Constant.URL.BASE_URL)
                 .client(client.provideClient())
                 .build()
-                .create(UserService::class.java)
+                .create(CartService::class.java)
         }
     }
 }

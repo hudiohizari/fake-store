@@ -11,5 +11,4 @@ package com.hizari.fakestore.ui.screen.main.profile
 sealed interface ProfileViewAction {
     data object LoadUser : ProfileViewAction
     data object Logout : ProfileViewAction
-
 }

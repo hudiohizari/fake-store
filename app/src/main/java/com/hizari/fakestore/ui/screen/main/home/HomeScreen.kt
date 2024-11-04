@@ -1,10 +1,11 @@
 package com.hizari.fakestore.ui.screen.main.home
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -15,17 +16,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hizari.common.data.Result
 import com.hizari.fakestore.R
 import com.hizari.fakestore.navigation.main.MainNavAction
 import com.hizari.fakestore.ui.component.bar.FSTopAppBar
+import com.hizari.fakestore.ui.component.bar.SnackBar
 import com.hizari.fakestore.ui.component.group.ChipGroup
+import com.hizari.fakestore.ui.component.state.DefaultResult
 import com.hizari.fakestore.ui.screen.main.cart.CartScreen
 import com.hizari.fakestore.ui.screen.main.detail.ProductDetailScreen
 import com.hizari.fakestore.ui.screen.main.profile.ProfileBottomSheetScreen
@@ -51,8 +57,17 @@ fun HomeScreen(
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.doAction(HomeViewAction.LoadCartCount)
+        viewModel.doAction(HomeViewAction.LoadCategoryList)
+    }
+
+    LaunchedEffect(viewState.selectedCategory) {
+        viewModel.doAction(HomeViewAction.LoadProductList(viewState.selectedCategory))
+    }
+
     HomeScreenContent(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         mainNavAction = mainNavAction,
         updateViewState = viewModel::updateViewState,
         viewState = viewState
@@ -64,9 +79,7 @@ fun HomeScreen(
 fun PreviewHomeScreenContent() {
     FakeStoreTheme {
         HomeScreenContent(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize(),
+            modifier = Modifier,
             mainNavAction = {},
             updateViewState = {},
             viewState = HomeViewState()
@@ -81,81 +94,127 @@ fun HomeScreenContent(
     updateViewState: ((HomeViewState) -> HomeViewState) -> Unit,
     viewState: HomeViewState
 ) {
-    Column(modifier = modifier) {
-        FSTopAppBar(
-            actions = {
-                IconButton(
-                    onClick = {
-                        mainNavAction.invoke(MainNavAction.GoToScreen(CartScreen))
-                    }
-                ) {
-                    BadgedBox(badge = {
-                        if (viewState.cartCounts <= 0) return@BadgedBox
-                        Badge {
-                            Text(text = viewState.cartCounts.toString())
+    Box(modifier = modifier.fillMaxSize()) {
+        Column {
+            FSTopAppBar(
+                actions = {
+                    IconButton(
+                        onClick = {
+                            mainNavAction.invoke(MainNavAction.GoToScreen(CartScreen))
                         }
-                    }) {
-                        Icon(
-                            contentDescription = stringResource(R.string.cart),
-                            imageVector = Icons.Default.ShoppingCart,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                }
-                IconButton(
-                    onClick = {
-                        updateViewState {
-                            it.copy(
-                                showProfile = true
+                    ) {
+                        BadgedBox(badge = {
+                            if (viewState.cartCountResult !is Result.Success) return@BadgedBox
+                            if (viewState.cartCountResult.data <= 0) return@BadgedBox
+                            Badge {
+                                Text(text = viewState.cartCountResult.data.toString())
+                            }
+                        }) {
+                            Icon(
+                                contentDescription = stringResource(R.string.cart),
+                                imageVector = Icons.Default.ShoppingCart,
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }
-                ) {
-                    Icon(
-                        contentDescription = stringResource(R.string.product_detail),
-                        imageVector = Icons.Default.Person,
-                        tint = MaterialTheme.colorScheme.onPrimary
+                    IconButton(
+                        onClick = {
+                            updateViewState {
+                                it.copy(
+                                    showProfile = true
+                                )
+                            }
+                        }
+                    ) {
+                        Icon(
+                            contentDescription = stringResource(R.string.product_detail),
+                            imageVector = Icons.Default.Person,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
+                title = stringResource(R.string.app_name)
+            )
+
+            DefaultResult(
+                result = viewState.categoryListResult,
+                onSuccess = { data ->
+                    ChipGroup(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(
+                            bottom = 0.dp,
+                            end = 16.dp,
+                            start = 16.dp,
+                            top = 16.dp,
+                        ),
+                        selected = viewState.selectedCategory,
+                        items = data,
+                        onSelectedChanged = { item ->
+                            updateViewState {
+                                it.copy(selectedCategory = item)
+                            }
+                        }
                     )
                 }
-            },
-            title = stringResource(R.string.app_name)
-        )
+            )
 
-        ChipGroup(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(
-                bottom = 0.dp,
-                end = 16.dp,
-                start = 16.dp,
-                top = 16.dp,
-            ),
-            selected = viewState.selectedCategory,
-            items = viewState.categoryList,
-            onSelectedChanged = { item ->
-                updateViewState {
-                    it.copy(selectedCategory = item)
+            DefaultResult(
+                result = viewState.productListResult,
+                onSuccess = { data ->
+                    HomeProductGroup(
+                        modifier = Modifier.fillMaxWidth(),
+                        onAddToCart = { product ->
+                            updateViewState {
+                                it.copy(
+                                    showAddedToCart = true,
+                                    productAddedToCart = product
+                                )
+                            }
+                        },
+                        onClick = {
+                            mainNavAction.invoke(
+                                MainNavAction.GoToScreen(
+                                    ProductDetailScreen(
+                                        productId = it.id
+                                    )
+                                )
+                            )
+                        },
+                        productList = data,
+                    )
                 }
-            }
-        )
-        
-        HomeProductGroup(
-            modifier = Modifier.fillMaxWidth(),
-            onAddToCart = { },
-            onClick = {
-                mainNavAction.invoke(MainNavAction.GoToScreen(ProductDetailScreen(productId = it.id)))
-            },
-            productList = viewState.productList,
-        )
+            )
 
-        ProfileBottomSheetScreen(
-            onDismissRequest = {
+            ProfileBottomSheetScreen(
+                onDismissRequest = {
+                    updateViewState {
+                        it.copy(
+                            showProfile = false
+                        )
+                    }
+                },
+                showBottomSheet = viewState.showProfile
+            )
+        }
+
+        SnackBar(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+            onClosed = {
                 updateViewState {
                     it.copy(
-                        showProfile = false
+                        showAddedToCart = false
                     )
                 }
             },
-            showBottomSheet = viewState.showProfile
+            show = viewState.showAddedToCart,
+            snackBar = SnackBar.success(
+                text = stringResource(
+                    R.string.successfully_added_x_to_cart,
+                    viewState.productAddedToCart?.title.orEmpty()
+                ),
+            ),
         )
     }
 }

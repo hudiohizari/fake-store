@@ -11,3 +11,7 @@ package com.hizari.common.extention
 fun String?.isNotNullAndEmpty(): Boolean {
     return isNullOrEmpty().not()
 }
+
+fun String.capitalizeWord(): String {
+    return this.split(" ").joinToString(" ") { it.replaceFirstChar { char -> char.uppercase() } }
+}

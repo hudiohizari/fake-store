@@ -26,11 +26,9 @@ import com.hizari.fakestore.ui.theme.FakeStoreTheme
 fun PreviewChipGroup() {
     FakeStoreTheme {
         ChipGroup(
-            items = listOf("All", "Men's clothing", "Women's clothing", "Jewelery", "Electronics"),
-            selected = "All",
-            onSelectedChanged = {
-
-            }
+            items = listOf("Men's clothing", "Women's clothing", "Jewelery", "Electronics"),
+            selected = null,
+            onSelectedChanged = {}
         )
     }
 }
@@ -42,7 +40,7 @@ fun ChipGroup(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
     items: List<String>,
     selected: String?,
-    onSelectedChanged: (String) -> Unit,
+    onSelectedChanged: (String?) -> Unit,
 ) {
     LazyRow(
         modifier = modifier.fillMaxWidth(),
@@ -55,7 +53,11 @@ fun ChipGroup(
                 name = item,
                 isSelected = selected == item,
                 onSelectionChanged = {
-                    onSelectedChanged(it)
+                    if (selected.equals(it, true)) {
+                        onSelectedChanged(null)
+                    } else {
+                        onSelectedChanged(it)
+                    }
                 },
             )
         }
