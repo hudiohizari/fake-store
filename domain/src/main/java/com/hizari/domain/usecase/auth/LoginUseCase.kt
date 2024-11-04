@@ -48,7 +48,8 @@ class LoginUseCase(
     }
 
     private suspend fun saveTokenAndUser(token: Token): Result<Unit> {
-        val userResult = userRepository.getCurrentUser()
+        // since cannot get user id when login, this will just be mocked
+        val userResult = userRepository.getUserById(1)
 
         return handleResult(
             resultCall = { userResult },

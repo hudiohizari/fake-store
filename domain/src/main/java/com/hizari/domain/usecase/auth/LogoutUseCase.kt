@@ -1,7 +1,6 @@
 package com.hizari.domain.usecase.auth
 
 import com.hizari.common.data.Result
-import com.hizari.common.extention.handleResult
 import com.hizari.domain.R
 import com.hizari.domain.provider.ResourcesProvider
 import com.hizari.domain.repository.auth.AuthRepository
@@ -28,21 +27,14 @@ class LogoutUseCase(
     }
 
     private suspend fun deleteTokenAndUser(): Result<Unit> {
-        val userResult = userRepository.getCurrentUser()
+        val saveUserResult = userRepository.clearLoggedInUser()
+        val saveTokenResult = authRepository.clearAccessToken()
 
-        return handleResult(
-            resultCall = { userResult },
-            onSuccess = {
-                val saveUserResult = userRepository.clearLoggedInUser()
-                val saveTokenResult = authRepository.clearAccessToken()
-
-                if (saveUserResult.success() && saveTokenResult.error()) {
-                    Result.Success(Unit)
-                } else {
-                    resolveSaveError(saveUserResult, saveTokenResult)
-                }
-            }
-        )
+        return if (saveUserResult.success() && saveTokenResult.error()) {
+            Result.Success(Unit)
+        } else {
+            resolveSaveError(saveUserResult, saveTokenResult)
+        }
     }
 
     private fun resolveSaveError(

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  *
  */
 interface UserRepository {
-    suspend fun getCurrentUser(): Result<User>
+    suspend fun getUserById(userId: Long): Result<User>
     suspend fun setLoggedInUser(user: User): Result<Unit>
     suspend fun getLoggedInUser(): Result<User>
     suspend fun clearLoggedInUser(): Result<Unit>

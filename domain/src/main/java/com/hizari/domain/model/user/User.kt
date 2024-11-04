@@ -20,9 +20,9 @@ data class User(
 ) {
 
     companion object {
-        fun mock(): User {
+        fun mock(id: Long = 1): User {
             return  User(
-                id = 1,
+                id = id,
                 email = "John@gmail.com",
                 name = Name(firstname = "John", lastname = "Doe"),
                 address = Address(

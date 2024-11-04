@@ -24,9 +24,17 @@ class UserRepositoryImpl @Inject constructor(
     private val userService: UserService,
     private val userDataStore: UserDataStore,
 ) : UserRepository, SafeApiRequest() {
-    override suspend fun getCurrentUser(): Result<User> {
-        // Cannot find current logged in user id from the API docs, so return mock
-        return Result.Success(User.mock())
+    override suspend fun getUserById(userId: Long): Result<User> {
+        return handleResult(
+            resultCall = {
+                apiRequest {
+                    userService.getUserById(userId)
+                }
+            },
+            onSuccess = { response ->
+                Result.Success(response.toDomain())
+            }
+        )
     }
 
     override suspend fun setLoggedInUser(user: User): Result<Unit> {
