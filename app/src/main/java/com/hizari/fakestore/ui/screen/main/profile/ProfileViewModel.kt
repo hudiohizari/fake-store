@@ -3,7 +3,7 @@ package com.hizari.fakestore.ui.screen.main.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hizari.domain.usecase.auth.LogoutUseCase
-import com.hizari.domain.usecase.user.RetrieveLoggedInUserUseCase
+import com.hizari.domain.usecase.user.GetLoggedInUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val retrieveLoggedInUserUseCase: RetrieveLoggedInUserUseCase
+    private val getLoggedInUserUseCase: GetLoggedInUserUseCase
 ) : ViewModel() {
 
     private val mutableViewState = MutableStateFlow(ProfileViewState())
@@ -41,7 +41,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun loadUser() {
-        retrieveLoggedInUserUseCase.invoke().onEach { res ->
+        getLoggedInUserUseCase.invoke().onEach { res ->
             updateViewState {
                 it.copy(userResult = res)
             }

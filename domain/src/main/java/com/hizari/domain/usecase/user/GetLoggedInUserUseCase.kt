@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
  *
  */
 
-class RetrieveLoggedInUserUseCase(private val userRepository: UserRepository) {
+class GetLoggedInUserUseCase(private val userRepository: UserRepository) {
 
     operator fun invoke(): Flow<Result<User>> = flow {
         emit(Result.Loading)
